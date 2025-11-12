@@ -34,13 +34,15 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   zoom,
   setZoom,
   onImageUpload,
-  onGenerate,
-  isGenerating,
   hasImage,
   isPoseReady,
+  onCapture,
+  onGenerate,
+  isGenerating,
+  capturedImageUrl,
 }) => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 p-4 bg-black bg-opacity-40 backdrop-blur-sm z-20">
+    <div className="relative bottom-0 left-0 right-0 p-4 bg-black bg-opacity-40 backdrop-blur-sm z-20">
       <div className="container mx-auto flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8">
         <Slider
           label="Rotar"
@@ -66,17 +68,17 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
           step={0.01}
           onChange={(e) => setZoom(parseFloat(e.target.value))}
         />
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 mt-4 md:mt-0">
             <div className="flex flex-col items-center">
                 <label 
                     htmlFor="file-upload" 
-                    className={`px-4 py-2 font-mono rounded-md transition-colors ${
+                    className={`px-4 py-2 font-mono rounded-md transition-colors text-center ${
                         isPoseReady 
                         ? 'bg-cyan-500 text-gray-900 cursor-pointer hover:bg-cyan-400' 
                         : 'bg-gray-600 text-gray-400 cursor-not-allowed'
                     }`}
                 >
-                    {isPoseReady ? 'Cargar Imagen' : 'Cargando IA...'}
+                    {isPoseReady ? 'Cargar' : 'Cargando...'}
                 </label>
                 <input 
                     id="file-upload" 
@@ -88,12 +90,23 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 />
             </div>
             <div className="flex flex-col items-center">
-                <button 
-                    onClick={onGenerate} 
-                    disabled={isGenerating || !hasImage || !isPoseReady}
-                    className="px-4 py-2 bg-green-500 text-gray-900 font-mono rounded-md cursor-pointer hover:bg-green-400 transition-colors disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                <button
+                    onClick={onCapture}
+                    disabled={!hasImage}
+                    className="px-4 py-2 font-mono rounded-md transition-colors bg-cyan-500 text-gray-900 cursor-pointer hover:bg-cyan-400 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                    aria-label="Capturar pose del exoesqueleto"
                 >
-                    {isGenerating ? 'Generando...' : 'Crear Imagen Neón'}
+                    Capturar
+                </button>
+            </div>
+             <div className="flex flex-col items-center">
+                <button
+                    onClick={onGenerate}
+                    disabled={!capturedImageUrl || isGenerating}
+                    className="px-4 py-2 font-mono rounded-md transition-colors bg-cyan-500 text-gray-900 cursor-pointer hover:bg-cyan-400 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed w-32 text-center"
+                    aria-label="Generar imagen con la nueva pose"
+                >
+                    {isGenerating ? 'Generando...' : 'Generar Imagen'}
                 </button>
             </div>
         </div>

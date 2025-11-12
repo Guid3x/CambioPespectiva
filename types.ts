@@ -15,15 +15,17 @@ export interface ControlPanelProps {
   zoom: number;
   setZoom: (value: number) => void;
   onImageUpload: (event: ChangeEvent<HTMLInputElement>) => void;
-  onGenerate: () => void;
-  isGenerating: boolean;
   hasImage: boolean;
   isPoseReady: boolean;
+  onCapture: () => void;
+  onGenerate: () => void;
+  isGenerating: boolean;
+  capturedImageUrl: string | null;
 }
 
-export interface ExoskeletonCanvasProps {
-  rotationY: number;
-  rotationX: number;
-  zoom: number;
-  landmarks: PoseLandmark[] | null;
+// Interfaz para el ref del Canvas, exponiendo los métodos que el padre puede llamar
+export interface ExoskeletonCanvasRef {
+  updatePose: (landmarks: PoseLandmark[] | null) => void;
+  updateControls: (controls: { rotationY: number, rotationX: number, zoom: number }) => void;
+  captureCanvas: () => string | null;
 }

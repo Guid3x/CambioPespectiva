@@ -1,5 +1,5 @@
 {
-  "name": "3D Neon Exoskeleton Viewer",
+  "name": "3D cambio pespectiva",
   "description": "An interactive 3D viewer for a minimalist neon exoskeleton model, built with React and Three.js. Users can rotate, tilt, and zoom the model using responsive sliders.",
   "requestFramePermissions": []
 }
