@@ -1,4 +1,3 @@
-
 import React from 'react';
 import type { ControlPanelProps } from '../types';
 
@@ -34,6 +33,11 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   setRotationX,
   zoom,
   setZoom,
+  onImageUpload,
+  onGenerate,
+  isGenerating,
+  hasImage,
+  isPoseReady,
 }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 p-4 bg-black bg-opacity-40 backdrop-blur-sm z-20">
@@ -62,6 +66,37 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
           step={0.01}
           onChange={(e) => setZoom(parseFloat(e.target.value))}
         />
+        <div className="flex items-center gap-4">
+            <div className="flex flex-col items-center">
+                <label 
+                    htmlFor="file-upload" 
+                    className={`px-4 py-2 font-mono rounded-md transition-colors ${
+                        isPoseReady 
+                        ? 'bg-cyan-500 text-gray-900 cursor-pointer hover:bg-cyan-400' 
+                        : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                    }`}
+                >
+                    {isPoseReady ? 'Cargar Imagen' : 'Cargando IA...'}
+                </label>
+                <input 
+                    id="file-upload" 
+                    type="file" 
+                    className="hidden" 
+                    onChange={onImageUpload} 
+                    accept="image/*"
+                    disabled={!isPoseReady}
+                />
+            </div>
+            <div className="flex flex-col items-center">
+                <button 
+                    onClick={onGenerate} 
+                    disabled={isGenerating || !hasImage || !isPoseReady}
+                    className="px-4 py-2 bg-green-500 text-gray-900 font-mono rounded-md cursor-pointer hover:bg-green-400 transition-colors disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                >
+                    {isGenerating ? 'Generando...' : 'Crear Imagen Neón'}
+                </button>
+            </div>
+        </div>
       </div>
     </div>
   );
